@@ -35,11 +35,9 @@ public class Board {
 		/**
 		*Checks for the case specified by the Alpha-Beta Search and returns number of possible moves
 		*/
-		int rowReturnCount = 0;
+		int rowReturnCount[] = (0, 0, 0, 0, 0);
 		
 		
-		switch(rowAmount){
-			case: 4{
 				rowReturnCount += checkBooleanHorizontal(rowAmount, openClose, player);
 				rowReturnCount += checkBooleanVertical(rowAmount, openClose, player);
 				rowReturnCount += checkBooleanHighLeftDiagonal(rowAmount, openClose, player);
@@ -58,97 +56,288 @@ public class Board {
 		return rowReturnCount;
 	}
 	
-	private checkHorizontal(int rowAmount, char player){
+	private checkHorizontal(char player){
 		/**
-		*Searches the entire string for horizontal rows the specified player can make and return the number of 5's 4Opens 4Closeds 3's and 2's
+		*Searches the entire string for horizontal rows 
+		*The specified player can make and return the array
+		*filled with the number of 5's 4Opens 4Closeds 3's and 2's
+		*as (5's, 4O's, 4C's, 3's, 2's)
 		*/
 		int count = 0;
-		int pieceCounter = 0;
-		while(count < s.length){
+		int pieceCounter = 1;
+		int boolean open = TRUE;
+		int rowCounter = 1;
+		int boolean drop = FALSE;
+		
+		while(count < masterBoard.length){
 			//If it finds the player's piece, count the rows
 			if(masterBoard.CharAt(count) && player){
-				//Increase the count to search the next part
-				count++;
-				//Increase the counter for pieces found
-				pieceCounter = 1;
-				//Continue searching until either matches the rowAmount, along with being open on one or the other, otherwise break
-				//Check before the found one, if open keep in memory for fully closed
-				//Check middle for the row itself. if no breaks, continue, if breaks, break out as it doesn't match query
-				//Check end for block. If both sides are blocked, do not count it to the return.
-				for(rowCounter=0; rowCounter<=i; i++){
-					if(board+(count*sizeof(char)) && search){
-						count++;
-						counter++;
-					}
-				}
-				if(counter && i){
-					rowCountReturn++;
-					else{
-						count = count-i;
-					}
+				//Check if the previous is closed or open
+				count--;
+				//If the spot is NOT a space CHECK THIS FOR CORRECTNESS
+				if(!(masterBoard.CharAt(count) && " ")){
+					open = FALSE;
 				}
 				
+				//Increase the count to search the next part
+				count = count+2;
+				//Increase the counter for pieces found
+				pieceCounter++;
+				
+				for(rowCounter=1; rowCounter<=5; rowCounter++){
+					//if reached end of the row, premature check and break(CHECK FOR OFF BY 1)
+					if(count%rowLength!=0){
+						rowCounter = 6;
+						pieceCounterSwitch(rowReturnCounter, open);
+						
+					}else{	
+						if(masterBoard.CharAt(count) && player){
+							//Count up
+							pieceCounter++;
+							//Increment
+							count++;
+							
+						}else{
+							//If the Spot is NOT a space CHECK THIS FOR CORRECTNESS
+							if(!(masterBoard.CharAt(count) && " "){
+								//If closed at the beginning
+								if(open == FALSE){
+									drop = TRUE;
+								}else{
+									open ==FALSE;
+									//force out
+									rowCounter = 6;
+								}
+							}
+						}
+					}
+				}
+				//After for loop, determine size
+				pieceCounterSwitch(rowReturnCounter, open);
 			}
-
 		}
 	}
 
 	private checkVertical(int rowAmount){
+		/**
+		*Searches the entire string for columns
+		*The specified player can make and return the array
+		*filled with the number of 5's 4Opens 4Closeds 3's and 2's
+		*as (5's, 4O's, 4C's, 3's, 2's)
+		*/
+		int count = 0;
+		int pieceCounter = 1;
+		int boolean open = TRUE;
+		int rowCounter = 1;
+		int boolean drop = FALSE;
 		
+		while(count < masterBoard.length){
+			//If it finds the player's piece, count the columns
+			if(masterBoard.CharAt(count) && player){
+				//Check if the previous is closed or open
+				count-rowLength;
+				//If the spot is NOT a space CHECK THIS FOR CORRECTNESS
+				if(!(masterBoard.CharAt(count) && " ")){
+					open = FALSE;
+				}
+				
+				//Increase the count to search the next part
+				count = count+(2*rowLength);
+				//Increase the counter for pieces found
+				pieceCounter++;
+				
+				for(rowCounter=1; rowCounter<=5; rowCounter++){
+					//if reached end of the column, premature check and break(CHECK FOR OFF BY 1)
+					if(count+rowLength > masterBoard.length){
+						rowCounter = 6;
+						pieceCounterSwitch(rowReturnCounter, open);
+						
+					}else{	
+						if(masterBoard.CharAt(count) && player){
+							//Count up
+							pieceCounter++;
+							//Increment
+							count+rowLength;
+							
+						}else{
+							//If the Spot is NOT a space CHECK THIS FOR CORRECTNESS
+							if(!(masterBoard.CharAt(count) && " "){
+								//If closed at the beginning
+								if(open == FALSE){
+									drop = TRUE;
+								}else{
+									open ==FALSE;
+									//force out
+									rowCounter = 6;
+								}
+							}
+						}
+					}
+				}
+				//After for loop, determine size
+				pieceCounterSwitch(rowReturnCounter, open);
+			}
+		}
 	}
 	private checkHighLeftDiagonal(int rowAmount){
+		/**
+		*Searches the entire string for high left diagonal rows 
+		*The specified player can make and return the array
+		*filled with the number of 5's 4Opens 4Closeds 3's and 2's
+		*as (5's, 4O's, 4C's, 3's, 2's)
+		*/
+		int count = 0;
+		int pieceCounter = 1;
+		int boolean open = TRUE;
+		int rowCounter = 1;
+		int boolean drop = FALSE;
 		
+		while(count < masterBoard.length){
+			//If it finds the player's piece, count the diagonals
+			if(masterBoard.CharAt(count) && player){
+				//Check if the previous is closed or open
+				count-rowLength-1;
+				//If the spot is NOT a space CHECK THIS FOR CORRECTNESS
+				if(!(masterBoard.CharAt(count) && " ")){
+					open = FALSE;
+				}
+				
+				//Increase the count to search the next part
+				count = count+(2*(rowLength+1));
+				//Increase the counter for pieces found
+				pieceCounter++;
+				
+				for(rowCounter=1; rowCounter<=5; rowCounter++){
+					//if reached end of the diagonal, premature check and break(CHECK FOR OFF BY 1)
+					//if(Insert Diagonal comparison here){
+						//rowCounter = 6;
+						//pieceCounterSwitch(rowReturnCounter, open);
+						
+					}else{	
+						if(masterBoard.CharAt(count) && player){
+							//Count up
+							pieceCounter++;
+							//Increment
+							count+rowLength+1;
+							
+						}else{
+							//If the Spot is NOT a space CHECK THIS FOR CORRECTNESS
+							if(!(masterBoard.CharAt(count) && " "){
+								//If closed at the beginning
+								if(open == FALSE){
+									drop = TRUE;
+								}else{
+									open ==FALSE;
+									//force out
+									rowCounter = 6;
+								}
+							}
+						}
+					}
+				}
+				//After for loop, determine size
+				pieceCounterSwitch(rowReturnCounter, open);
+			}
+		}
 	}
 	private checkHighRightDiagonal(int rowAmount{
-	
-	)
-	
-	private checkBooleanHorizontal(int rowAmount, boolean openClose){
-		switch(openClose){
-			case(TRUE):{
+		/**
+		*Searches the entire string for high right diagonal rows 
+		*The specified player can make and return the array
+		*filled with the number of 5's 4Opens 4Closeds 3's and 2's
+		*as (5's, 4O's, 4C's, 3's, 2's)
+		*/
+		int count = 0;
+		int pieceCounter = 1;
+		int boolean open = TRUE;
+		int rowCounter = 1;
+		int boolean drop = FALSE;
+		
+		while(count < masterBoard.length){
+			//If it finds the player's piece, count the diagonals
+			if(masterBoard.CharAt(count) && player){
+				//Check if the previous is closed or open
+				count-rowLength+1;
+				//If the spot is NOT a space CHECK THIS FOR CORRECTNESS
+				if(!(masterBoard.CharAt(count) && " ")){
+					open = FALSE;
+				}
 				
+				//Increase the count to search the next part
+				count = count+((2*rowLength)-2);
+				//Increase the counter for pieces found
+				pieceCounter++;
+				
+				for(rowCounter=1; rowCounter<=5; rowCounter++){
+					//if reached end of the diagonal, premature check and break(CHECK FOR OFF BY 1)
+					//if(Insert Diagonal comparison here){
+						//rowCounter = 6;
+						//pieceCounterSwitch(rowReturnCounter, open);
+						
+					}else{	
+						if(masterBoard.CharAt(count) && player){
+							//Count up
+							pieceCounter++;
+							//Increment
+							count+rowLength-1;
+							
+						}else{
+							//If the Spot is NOT a space CHECK THIS FOR CORRECTNESS
+							if(!(masterBoard.CharAt(count) && " "){
+								//If closed at the beginning
+								if(open == FALSE){
+									drop = TRUE;
+								}else{
+									open ==FALSE;
+									//force out
+									rowCounter = 6;
+								}
+							}
+						}
+					}
 			}
-			case(FALSE:{
-				
-			)
-		}
-		return;
-	}
-	
-	private checkBooleanVertical(int rowAmount, boolean openClose){
-		switch(openClose){
-			case(TRUE):{
-				
-			}
-			case(FALSE:{
-				
-			)
-		}
-		return;
+			//After for loop, determine size
+			pieceCounterSwitch(rowReturnCounter, open);
 		}
 	}
-	private checkBooleanHighLeftDiagonal(int rowAmount, boolean openClose){
-		switch(openClose){
-			case(TRUE):{
-				
-			}
-			case(FALSE:{
-				
-			)
-		}
-		return;
+
+	private void pieceCounterSwitch(rowReturnCount, open){
+		/**
+		*Switch Case for selecting what to shove inside rowReturnCount
+		*/
+		switch(pieceCounter){
+							case 5:
+								if(drop == FALSE){
+									rowReturnCount[0] = rowReturnCount[0]+1;
+									drop == FALSE;
+									break;
+								}
+							case 4:
+								if(drop == FALSE){
+									if(open == TRUE){
+									rowReturnCount[1] = rowReturnCount[1]+1;
+									drop == FALSE;
+									break;
+									}
+									if(open == FALSE){
+										rowReturnCount[2] = rowReturnCount[2]+1;
+										drop == FALSE;
+										break;
+									}
+								}
+							case 3:
+								if(drop == FALSE){
+									rowReturnCount[3] = rowReturnCount[3]+1;
+									drop == FALSE;
+									break;
+								}
+							case 2:
+								if(drop == FALSE){
+									rowReturnCount[4] = rowReturnCount[4]+1;
+									drop == FALSE;
+									break;
+								}
+							default:
+								drop == FALSE;
 		}
 	}
-	private checkBooleanHighRightDiagonal(int rowAmount, boolean openClose){
-		switch(openClose){
-			case(TRUE):{
-				
-			}
-			case(FALSE:{
-				
-			)
-		}
-		return;
-		}
-	}
-}
