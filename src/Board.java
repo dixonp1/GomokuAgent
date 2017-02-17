@@ -192,27 +192,33 @@ public class Board {
 		int rowCounter = 1;
 		int boolean drop = FALSE;
 		
+		int count = 0;
+		int pieceCounter = 1;
+		int boolean open = TRUE;
+		int rowCounter = 1;
+		int boolean drop = FALSE;
+		
 		while(count < masterBoard.length){
 			//If it finds the player's piece, count the diagonals
 			if(masterBoard.CharAt(count) && player){
 				//Check if the previous is closed or open
-				count-rowLength-1;
+				count= count-rowLength-1;
 				//If the spot is NOT a space CHECK THIS FOR CORRECTNESS
-				if(!(masterBoard.CharAt(count) && " ")){
-					open = FALSE;
+				if(!(count <0)){
+					if(!(masterBoard.CharAt(count) && " ")){
+						open = FALSE;
+					}
 				}
-				
 				//Increase the count to search the next part
-				count = count+(2*(rowLength+1));
+				count = count+((2*rowLength)+2);
 				//Increase the counter for pieces found
 				pieceCounter++;
 				
 				for(rowCounter=1; rowCounter<=5; rowCounter++){
-					//if reached end of the diagonal, premature check and break(CHECK FOR OFF BY 1)
-					//if(Insert Diagonal comparison here){
-						//rowCounter = 6;
-						//pieceCounterSwitch(rowReturnCounter, open);
-						
+					//	if reached end of the diagonal, premature check and break(CHECK FOR OFF BY 1)
+					if(count % rowLength > 0){
+						rowCounter = 9;
+						drop = TRUE;
 					}else{	
 						if(masterBoard.CharAt(count) && player){
 							//Count up
@@ -235,12 +241,11 @@ public class Board {
 						}
 					}
 				}
-				//After for loop, determine size
-				pieceCounterSwitch(rowReturnCounter, open);
-			}
+			//After for loop, determine size
+			pieceCounterSwitch(rowReturnCounter, open);
 		}
 	}
-	private checkHighRightDiagonal(int rowAmount{
+	private checkHighRightDiagonal(int rowAmount)	
 		/**
 		*Searches the entire string for high right diagonal rows 
 		*The specified player can make and return the array
@@ -257,23 +262,23 @@ public class Board {
 			//If it finds the player's piece, count the diagonals
 			if(masterBoard.CharAt(count) && player){
 				//Check if the previous is closed or open
-				count-rowLength+1;
+				count= count-rowLength+1;
 				//If the spot is NOT a space CHECK THIS FOR CORRECTNESS
-				if(!(masterBoard.CharAt(count) && " ")){
-					open = FALSE;
+				if(!(count <0)){
+					if(!(masterBoard.CharAt(count) && " ")){
+						open = FALSE;
+					}
 				}
-				
 				//Increase the count to search the next part
 				count = count+((2*rowLength)-2);
 				//Increase the counter for pieces found
 				pieceCounter++;
 				
 				for(rowCounter=1; rowCounter<=5; rowCounter++){
-					//if reached end of the diagonal, premature check and break(CHECK FOR OFF BY 1)
-					//if(Insert Diagonal comparison here){
-						//rowCounter = 6;
-						//pieceCounterSwitch(rowReturnCounter, open);
-						
+					//	if reached end of the diagonal, premature check and break(CHECK FOR OFF BY 1)
+					if(count % rowLength = rowlength-1){
+						rowCounter = 9;
+						drop = TRUE;
 					}else{	
 						if(masterBoard.CharAt(count) && player){
 							//Count up
@@ -295,7 +300,7 @@ public class Board {
 							}
 						}
 					}
-			}
+				}
 			//After for loop, determine size
 			pieceCounterSwitch(rowReturnCounter, open);
 		}
