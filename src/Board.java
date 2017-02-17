@@ -19,7 +19,8 @@ public class Board {
 	
 	public int Array locationOfSpaces(){
 		/**
-		*Checks each location on the board for spaces available and returns the locations in an array
+		*Checks each location on the board for spaces available 
+		*returns the locations in an array.
 		*/
 		int Array[];
 		int arrayCounter = 0;
@@ -33,11 +34,11 @@ public class Board {
 	
 	public checkRows(char player){
 		/**
-		*Checks for the case specified by the Alpha-Beta Search and returns number of possible moves
+		*Checks for the case specified by the Alpha-Beta Search
+		*returns number of possible moves
 		*/
 		int rowReturnCount[] = (0, 0, 0, 0, 0);
 		
-	
 			rowReturnCount += checkHorizontal(rowReturnCount, player);
 			rowReturnCount += checkVertical(rowReturnCount, player);
 			rowReturnCount += checkHighLeftDiagonal(rowReturnCount, player);
