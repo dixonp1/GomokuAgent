@@ -31,32 +31,23 @@ public class Board {
 		return array;
 	}
 	
-	public checkRows(int rowAmount, boolean openClose, char player){
+	public checkRows(char player){
 		/**
 		*Checks for the case specified by the Alpha-Beta Search and returns number of possible moves
 		*/
 		int rowReturnCount[] = (0, 0, 0, 0, 0);
 		
-		
-				rowReturnCount += checkBooleanHorizontal(rowAmount, openClose, player);
-				rowReturnCount += checkBooleanVertical(rowAmount, openClose, player);
-				rowReturnCount += checkBooleanHighLeftDiagonal(rowAmount, openClose, player);
-				rowReturnCount += checkBooleanHighRightDiagonal(rowAmount, openClose, player);
-				break;
-			}
-			
-			default:{
-				rowReturnCount += checkHorizontal(rowAmount, player);
-				rowReturnCount += checkVertical(rowAmount, player);
-				rowReturnCount += checkHighLeftDiagonal(rowAmount, player);
-				rowReturnCount += checkHighRightDiagonal(rowAmount, player);
-			}
+	
+			rowReturnCount += checkHorizontal(rowReturnCount, player);
+			rowReturnCount += checkVertical(rowReturnCount, player);
+			rowReturnCount += checkHighLeftDiagonal(rowReturnCount, player);
+			rowReturnCount += checkHighRightDiagonal(rowReturnCount, player);
 			
 		}
 		return rowReturnCount;
 	}
 	
-	private checkHorizontal(char player){
+	private checkHorizontal(int[] rowReturnCount, char player){
 		/**
 		*Searches the entire string for horizontal rows 
 		*The specified player can make and return the array
@@ -118,7 +109,7 @@ public class Board {
 		}
 	}
 
-	private checkVertical(int rowAmount){
+	private checkVertical(int[] rowReturnCount, char player){
 		/**
 		*Searches the entire string for columns
 		*The specified player can make and return the array
@@ -179,7 +170,7 @@ public class Board {
 			}
 		}
 	}
-	private checkHighLeftDiagonal(int rowAmount){
+	private checkHighLeftDiagonal(int[] rowReturnCount, char player){
 		/**
 		*Searches the entire string for high left diagonal rows 
 		*The specified player can make and return the array
@@ -245,7 +236,7 @@ public class Board {
 			pieceCounterSwitch(rowReturnCounter, open);
 		}
 	}
-	private checkHighRightDiagonal(int rowAmount)	
+	private checkHighRightDiagonal(int[] rowReturnCount, char player)	
 		/**
 		*Searches the entire string for high right diagonal rows 
 		*The specified player can make and return the array
