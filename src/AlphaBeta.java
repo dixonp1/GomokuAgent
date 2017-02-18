@@ -16,14 +16,14 @@ public class AlphaBeta {
 	};
 
 	private double eval(Board board, int player) {
-		int fourRow = board.fourRow(player);
-		int threeRow = board.threeRow(player);
-		int twoRow = board.twoRow(player);
+		int fourRow = board.checkState(player, 4);
+		int threeRow = board.checkState(player, 3);
+		int twoRow = board.checkState(player, 2);
 
 		return fourRow * 1 + threeRow * 0.1 + twoRow * 0.05;
 	}
 
-	public int alphabeta(Board board) {
+	public String alphabetasearch(Board board) {
 		//create timeListener to update TURNENDS value when time runs out
 		timer = new Timer(TURNTIME, listener);
 		
@@ -31,7 +31,7 @@ public class AlphaBeta {
 		Object[] move = {minimaxValue(board, Double.NEGATIVE_INFINITY, 
 				Double.POSITIVE_INFINITY, depth, 1)};
 		//return move returned by alpha beta
-		return (Integer) move[1];
+		return (String)move[1];
 		
 //		int value = minimaxValue(board, -100, 100, depth, 1);
 //		//return move returned by alpha beta
@@ -42,7 +42,7 @@ public class AlphaBeta {
 									int depth, int player){
 		
 		//generate moves
-		int[] moveList = board.getPossibleMoves(player); 
+		int[] moveList = board.getMoves(); 
 		
 //		if(board.child.size() == 0) return board.value;
 //		ArrayList<Board> child = board.child;		
@@ -59,8 +59,8 @@ public class AlphaBeta {
 		int position = 0;
 		
 		
-		for (int i = 0; i < board.child.size(); i++) {
-			Object[] v = -minimaxValue(board.updateBoard(moveList[i]), -beta, 
+		for (int i = 0; i < moveList.length; i++) {
+			Object[] v = -minimaxValue(board.setMove(moveList[i]), -beta, 
 									-alpha, depth-1, -player);
 			
 //			int v = -minimaxValue(child.get(i), -beta, -alpha, depth, player);
@@ -95,7 +95,7 @@ public class AlphaBeta {
 	private boolean cutoff_test(Board board, int depth, int player) {
 		if (depth == 0) {return true;}
 		if (turnends) {return true;}
-		if (board.fiveinRow(player)) {return true;}
+		if (board.checkwin(player)) {return true;}
 		return false;
 	}
 	
