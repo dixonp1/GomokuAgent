@@ -14,6 +14,7 @@ public class Main {
 	protected String gs = null;// GameState.
 	private AlphaBeta ab;
 	private int firstMovesMade;
+	private char us, them;
 
 	public static void main(String args[]) throws IOException {
 
@@ -95,7 +96,6 @@ public class Main {
 	public Board readIn() throws Exception {
 		String s;
 		char[][] gb;
-		char c;
 		int r;
 		gs = is.readLine();// reads in games(1)First Line-game status
 							// (continuing, win, lose, draw, forfeit-move,
@@ -110,11 +110,11 @@ public class Main {
 			s = is.readLine();
 			gb[r] = s.toCharArray();
 		}
-		c = is.readLine().charAt(0); // Third Line-single character specifying
-										// which player (x or o) is to play
+		us = is.readLine().charAt(0); // Third Line-single character specifying
+		them = (us=='w') ? 'w':'b';								// which player (x or o) is to play
 										// next.its telling me I'm next.
 
-		Board bd = new Board(gb, s.length(), c);// Board to Noctis.gridIn is
+		Board bd = new Board(gb, s.length(), us, them);// Board to Noctis.gridIn is
 												// buffered reader..
 		return bd;
 	}
@@ -138,7 +138,7 @@ public class Main {
 				}
 			}
 		}else{
-			move = ab.alphabetasearch(board);
+			move = ab.alphabetasearch(board, us);
 		}
 		return move;
 	}

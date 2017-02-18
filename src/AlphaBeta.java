@@ -1,5 +1,6 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.Timer;
 
@@ -15,15 +16,12 @@ public class AlphaBeta {
 		}
 	};
 
-	private double eval(Board board, int player) {
-		int fourRow = board.checkState(player, 4);
-		int threeRow = board.checkState(player, 3);
-		int twoRow = board.checkState(player, 2);
-
-		return fourRow * 1 + threeRow * 0.1 + twoRow * 0.05;
+	private double eval(Board board, String move, int player) {
+		int[] states = board.checkState(player, move, false);
+		return states[2] * 1 + states[1] * 0.1 + states[0] * 0.05;
 	}
 
-	public String alphabetasearch(Board board) {
+	public String alphabetasearch(Board board, char us) {
 		//create timeListener to update TURNENDS value when time runs out
 		timer = new Timer(TURNTIME, listener);
 		
@@ -42,34 +40,36 @@ public class AlphaBeta {
 									int depth, int player){
 		
 		//generate moves
-		int[] moveList = board.getMoves(); 
+		ArrayList<String> moveList = board.getMoves(); 
 		
 //		if(board.child.size() == 0) return board.value;
 //		ArrayList<Board> child = board.child;		
 		
-		//check cutoff tests
-		//return current move and heuristic if TRUE
-		if (cutoff_test(board, depth, player)) {
-			Object[] move = {eval(board, player), moveList[0]};
-			return move;
-		}
-		
 		double bestValue = Double.NEGATIVE_INFINITY;
 //		int bestValue = -100;
-		int position = 0;
+		String position = "";
 		
 		
-		for (int i = 0; i < moveList.length; i++) {
-			Object[] v = -minimaxValue(board.setMove(moveList[i]), -beta, 
-									-alpha, depth-1, -player);
+		for (int i = 0; i < moveList.size(); i++) {
+			Board newboard = new Board(board);
+			board.setMove(moveList.get(i), player);
+			
+			//check cutoff tests
+			//return current move and heuristic if TRUE
+			if (cutoff_test(board, depth, moveList.get(i), player)) {
+				Object[] move = {eval(board, moveList.get(i), player), moveList.get(i)};
+				return move;
+			}
+			
+			Object[] v = minimaxValue(newboard, -beta, -alpha, depth-1, -player);
 			
 //			int v = -minimaxValue(child.get(i), -beta, -alpha, depth, player);
 			
 			//bestValue := max(bestValue, v)
-			if(bestValue < (Double)v[0]){
-				bestValue = (Double)v[0];
+			if(bestValue < -(Double)v[0]){
+				bestValue = -(Double)v[0];
 				//set new best move
-				position = moveList[i];
+				position = moveList.get(i);
 			}
 			
 //			if(bestValue < v){
@@ -77,7 +77,7 @@ public class AlphaBeta {
 //			}
 			
 			//update alpha
-			alpha = Math.max(alpha,(Double)v[0]);
+			alpha = Math.max(alpha,-(Double)v[0]);
 			
 			//check pruning condition
 			if(alpha >= beta){
@@ -92,10 +92,10 @@ public class AlphaBeta {
 		return move;
 	}
 
-	private boolean cutoff_test(Board board, int depth, int player) {
+	private boolean cutoff_test(Board board, int depth, String move, int player) {
 		if (depth == 0) {return true;}
 		if (turnends) {return true;}
-		if (board.checkwin(player)) {return true;}
+		if (board.checkState(player, move, true)[-1] == -1) {return true;}
 		return false;
 	}
 	
